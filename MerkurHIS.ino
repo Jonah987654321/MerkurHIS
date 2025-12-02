@@ -25,7 +25,6 @@ void setup() {
 }
 
 void loop() {
-  return;
   time_t now = time(nullptr);
   struct tm *timeinfo = localtime(&now);
 
