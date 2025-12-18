@@ -3,7 +3,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7735.h>
 #include <SPI.h>
-#include <Fonts/FreeSansBold12pt7b.h>
 
 #include "src/DisplayManager.h"
 
@@ -13,14 +12,10 @@
 #define TFT_RST  D3
 
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-
-// Timing
-int currentMin = -1;
+DisplayManager display(tft);
 
 void setup() {
   Serial.begin(115200);
-
-  DisplayManager display(tft);
   display.init();
 }
 

@@ -1,5 +1,6 @@
 #include "DisplayManager.h"
 #include <ESP8266WiFi.h>
+#include <Fonts/FreeSansBold12pt7b.h>
 
 DisplayManager::DisplayManager(Adafruit_ST7735 &display) : tft(display) {}
 
@@ -10,6 +11,7 @@ void DisplayManager::init() {
     this->tft.setTextColor(ST77XX_WHITE);
     this->tft.setTextSize(1);
     this->tft.setCursor(10, 30);
+    this->tft.setRotation(2);
     this->startupLog("Starting MerkurHIS");
 
     // Connect to WiFi
