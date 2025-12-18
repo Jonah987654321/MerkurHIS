@@ -13,6 +13,8 @@ class Screen: public ComponentBase {
             heightAbsolute = display.getHeight();
         };
 
+        DisplayManager& getDisplay() override { return display; }
+
     private:
         DisplayManager& display;
 };

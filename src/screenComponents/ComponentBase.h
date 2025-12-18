@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <memory>
 
+#include "../DisplayManager.h"
+
 class ComponentBase {
     public:
         ComponentBase(int wPct, int hPct, bool allowChildren = true)
@@ -98,6 +100,11 @@ class ComponentBase {
             this->nextOffsetY += y;
         }
 
+        virtual DisplayManager& getDisplay() {
+            if (!this->parent) throw std::logic_error("Root component must override getDisplay()");
+            return this->parent->getDisplay();
+        }
+
     protected:
         int widthPct;
         int heightPct;
@@ -114,7 +121,7 @@ class ComponentBase {
         double widthAbsolute;
 
         uint16_t baseColor;
-        bool hasBaseColor;
+        bool hasBaseColor = false;
         
         bool allowChildren;
 
@@ -135,7 +142,7 @@ class ComponentBase {
 
         virtual void renderSelf() {};
         void cleanBackground() {
-            
+            getDisplay().fillRect(startX, startY, getWidth(), getHeight(), getBaseColor());
         };
 };
 

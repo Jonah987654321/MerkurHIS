@@ -15,6 +15,16 @@ class DisplayManager {
     double getWidth() { return tft.width(); }
     double getHeight() {return tft.height(); }
 
+    void fillRect(int x, int y, int w, int h, uint16_t color);
+    void drawText(
+        int x,
+        int y,
+        const char* text,
+        uint16_t color,
+        uint8_t size = 1
+    );
+
+
   private:
     Adafruit_ST7735 &tft;
     int status = 0;

@@ -77,3 +77,20 @@ void DisplayManager::startupLog(std::string text) {
   this->startupCursorHeight += h+5;
   this->tft.print(toPrint);
 }
+
+void DisplayManager::fillRect(int x, int y, int w, int h, uint16_t color) {
+  tft.fillRect(x, y, w, h, color);
+}
+
+void DisplayManager::drawText(
+  int x,
+  int y,
+  const char* text,
+  uint16_t color,
+  uint8_t size
+) {
+  tft.setTextSize(size);
+  tft.setTextColor(color);
+  tft.setCursor(x, y);
+  tft.print(text);
+}
