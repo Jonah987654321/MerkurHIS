@@ -37,34 +37,6 @@ void DisplayManager::init() {
     }
 }
 
-void DisplayManager::update() {
-  time_t now = time(nullptr);
-  struct tm *timeinfo = localtime(&now);
-
-  if (timeinfo->tm_min != currentMin) {
-    // HH:MM korrekt als C-String
-    char buf[6];
-    snprintf(buf, sizeof(buf), "%02d:%02d", timeinfo->tm_hour, timeinfo->tm_min);
-
-    tft.fillScreen(ST77XX_BLACK);
-    tft.setTextColor(ST77XX_WHITE);
-    tft.setFont(&FreeSansBold12pt7b);
-
-    int16_t x1, y1;
-    uint16_t w, h;
-    tft.getTextBounds(buf, 0, 0, &x1, &y1, &w, &h);
-
-    int16_t y = (tft.height() - h) / 2 - y1;
-    int16_t x = (tft.width() - w) / 2 - x1;
-
-    tft.setCursor(x, y);
-    tft.print(buf);
-
-    currentMin = timeinfo->tm_min;
-  }
-  yield();
-}
-
 void DisplayManager::startupLog(std::string text) {
   const char* toPrint = text.c_str();
   this->tft.setCursor(5, startupCursorHeight);
@@ -78,19 +50,19 @@ void DisplayManager::startupLog(std::string text) {
   this->tft.print(toPrint);
 }
 
-void DisplayManager::fillRect(int x, int y, int w, int h, uint16_t color) {
-  tft.fillRect(x, y, w, h, color);
+void DisplayManager::fillRect(AssignedSpace space, uint16_t color) {
+  tft.fillRect(space.x, space.y, space.width, space.height, color);
 }
 
-void DisplayManager::drawText(
-  int x,
-  int y,
-  const char* text,
-  uint16_t color,
-  uint8_t size
-) {
+void DisplayManager::drawText(AssignedSpace space, Align align, const char* text, uint16_t color, uint8_t size) {
+  int16_t x1, y1;
+  uint16_t w, h;
+  tft.getTextBounds(text, space.x, space.y, &x1, &y1, &w, &h);
+  int16_t verticalOffset = (align.vertical==VerticalAlign::Bottom)?space.height-h:(align.vertical==VerticalAlign::Middle)?(space.height-h)/2:0;
+  int16_t horizontalOffset = (align.horizontal==HorizontalAlign::Right)?space.width-w:(align.horizontal==HorizontalAlign::Center)?(space.width-w)/2:0;
+  
   tft.setTextSize(size);
   tft.setTextColor(color);
-  tft.setCursor(x, y);
+  tft.setCursor(space.x+horizontalOffset, space.y+verticalOffset);
   tft.print(text);
 }

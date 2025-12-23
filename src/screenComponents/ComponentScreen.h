@@ -6,12 +6,7 @@
 
 class Screen: public ComponentBase {
     public:
-        Screen(DisplayManager& display): ComponentBase(100, 100), display(display) {
-            startX = 0;
-            startY = 0;
-            widthAbsolute  = display.getWidth();
-            heightAbsolute = display.getHeight();
-        };
+        Screen(DisplayManager& display): ComponentBase(100, 100), display(display) {};
 
         DisplayManager& getDisplay() override { return display; }
 
